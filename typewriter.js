@@ -79,6 +79,7 @@ class Typewriter {
         this.strings = strings;
         this.config = config;
         this.string = startWith;
+        this.loop = true;
         this.element = true;
 
         this.init();
@@ -88,6 +89,7 @@ class Typewriter {
         this.element = document.querySelector(this.selector);
         
         if(this.config["cursor"]) this.element.classList.add("typed-cursor"); 
+        if(this.config["loop"] == false) this.loop = false;
         if(this.config["highlight"]) this.element.style.setProperty(
             "background-color", 
             this.config["highlightColor"] || "rgba(255,255,255,0.5)"
@@ -148,7 +150,7 @@ class Typewriter {
             await this.transition(this.strings[i]);
         }
 
-        if(this.config["loop"]) return await this.startTransitions();
+        if(this.loop) return await this.startTransitions();
 
         this.log("[startTransitions] Starting transitions...");
         return this;
