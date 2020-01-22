@@ -17,7 +17,9 @@
     "typewriter is cool",
     "typewriter is fast"
   ], {
-    "highlight": true
+    "loop": true,
+    "highlight": true,
+    "cursor": true,
   });
 </script>
 ```
