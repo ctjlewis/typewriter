@@ -1,6 +1,6 @@
 <script src="typewriter.min.js"></script>
 <script>
-  new Typed("h1.project-name", [
+  new Typewriter("h1.project-name", [
     "typewriter is awesome",
     "typewriter is cool",
     "typewriter is fast"
@@ -12,7 +12,7 @@
 ```
 <script src="typewriter.min.js"></script>
 <script>
-  new Typed("h1.project-name", [
+  new Typewriter("h1.project-name", [
     "typewriter is awesome",
     "typewriter is cool",
     "typewriter is fast"
