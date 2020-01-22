@@ -73,8 +73,10 @@ window.waitForOverscrollUnlock =
     async () =>  await window.waitUntil(window.notOverscrolled);
 
 class Typewriter {
-    constructor(selector, config = {}, startWith = config.default || "") {
+    constructor(selector, strings, config = {}, startWith = config["default"]) {
+
         this.selector = selector;
+        this.strings = strings;
         this.config = config;
         this.string = startWith;
         this.element = true;
@@ -91,7 +93,12 @@ class Typewriter {
             this.config["highlightColor"] || "rgba(255,255,255,0.5)"
         );
 
-        await this.update(false);
+        // if initial string doesn't exist, set it to element inner
+        if(!this.string) this.string = this.element.innerHTML;
+
+        this.log("[init] this.string:", this.string);
+
+        if(this.string) await this.update(false);
         await this.startTransitions();
         
         return this;
@@ -102,7 +109,7 @@ class Typewriter {
         return new Promise(resolve => window.setTimeout(resolve, ms));
     }
 
-    async updateElement(delay = true) {
+    async updateElement() {
 
         this.log("[updateElement] called");
 
@@ -120,7 +127,7 @@ class Typewriter {
         await window.waitForOverscrollUnlock();
 
         this.log("Overscroll Lock released.");
-        await this.updateElement(delay);
+        await this.updateElement();
 
         this.log("[update] Triggering delay.")
         if (delay) await this.delay(delay);
@@ -131,13 +138,14 @@ class Typewriter {
 
     async startTransitions() {
 
-        var inBetweenPause = this.config["inBetweenPause"] || 1000;
-        var transitions = this.config["strings"] || [];
+        if(!this.strings) return;
 
-        this.log("[startTransitions] got transitions:", transitions);
-        for (var i = 0; i < transitions.length; i++) {
+        var inBetweenPause = this.config["inBetweenPause"] || 1000;
+
+        this.log("[startTransitions] got strings:", this.strings);
+        for (var i = 0; i < this.strings.length; i++) {
             await this.delay(inBetweenPause);
-            await this.transition(transitions[i]);
+            await this.transition(this.strings[i]);
         }
 
         if(this.config["loop"]) return await this.startTransitions();
