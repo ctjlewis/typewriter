@@ -206,7 +206,7 @@ class Typewriter {
     }
 
     log(...strs) {
-        if(window.TYPED_DEBUG) console.log(...strs);
+        if(window.TYPEWRITER_DEBUG) console.log(...strs);
         return this;
     }
 }
