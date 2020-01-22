@@ -19,7 +19,7 @@ A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typ
         "This is my fourth string.^2000"
     ],
     "typeSpeed": 100, // default
-    "backSpeed": 50, // default
+    "backSpeed": 75, // default
     "cursor": false, // default
     "highlight": false, // default
     "loop": true, // default

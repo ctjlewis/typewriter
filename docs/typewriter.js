@@ -65,14 +65,14 @@ window.waitUntil = function (condition) {
     return new Promise(poll);
 }
 
-// Check if overscrolled (Safari)
-// window.notOverscrolled =
-//     () => !(document.body.scrollTop < 0 || document.body.scrollTop + window.innerHeight > document.body.scrollHeight);
+window.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-window.notOverscrolled = () => true;
+// Check if overscrolled (Safari)
+window.overscrollCheck =
+    () => !(document.body.scrollTop < 0 || document.body.scrollTop + window.innerHeight > document.body.scrollHeight);
 
 window.waitForOverscrollUnlock = 
-    async () =>  await window.waitUntil(window.notOverscrolled);
+    async () =>  await window.waitUntil(window.overscrollCheck);
 
 class Typewriter {
     constructor(selector, strings, config = {}, startWith = config["default"]) {
@@ -97,14 +97,15 @@ class Typewriter {
             this.config["highlightColor"] || "rgba(255,255,255,0.5)"
         );
 
+        if(window.isSafari) this.log("Safari detected. Will use overscroll lock.");
+
         // if initial string doesn't exist, set it to element inner
         if(!this.string) this.string = this.element.innerHTML;
-
-        this.log("[init] this.string:", this.string);
+        this.log("[init] Got this.string:", this.string);
 
         if(this.string) await this.update(false);
         await this.startTransitions();
-        
+
         return this;
     }
 
@@ -127,10 +128,12 @@ class Typewriter {
 
     async update(delay) {
 
-        this.log("Waiting for Overscroll Unlock...");
-        await window.waitForOverscrollUnlock();
+        if(window.isSafari) {
+            this.log("Waiting for Overscroll Unlock...");
+            await window.waitForOverscrollUnlock();
+            this.log("Overscroll Lock released.");
+        }
 
-        this.log("Overscroll Lock released.");
         await this.updateElement();
 
         this.log("[update] Triggering delay.")
@@ -168,7 +171,7 @@ class Typewriter {
         this.string = this.string.substring(0, this.string.length - 1);
         
         this.log("[deleteCharacter] Character deleted. Now reads:", this.string);
-        return await this.update(this.config["backSpeed"] || 50);
+        return await this.update(this.config["backSpeed"] || 75);
     }
 
     async addUntil(until) {
