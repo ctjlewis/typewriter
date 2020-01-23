@@ -21,6 +21,10 @@ A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typ
 ```
 i.e., `new Typewriter("#typed-text", ["My first string", "My second string"])`.
 
+# Demo
+[View the demo on GitHub Pages](https://herculean-inc.github.io/typewriter/).
+
+
 # Notes
 
 - Unlike Typed.js, `cursor` is false and `loop` is true by default. The `default` string is set immediately, and then the strings are cycled through. 
