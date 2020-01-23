@@ -10,10 +10,10 @@
     background-image: linear-gradient(120deg, #1565c0, #003c8f);
   }
 </style>
-<script src="typewriter.js"></script>
+<script src="typewriter.min.js"></script>
 <script>
   var typewriter = new Typewriter("h1.project-name", [
-    "typewriter is awesome",
+    "typewriter is sweet",
     "typewriter is cool",
     "typewriter is easy"
   ], {
@@ -26,7 +26,7 @@
 <script src="typewriter.min.js"></script>
 <script>
   var typewriter = new Typewriter("h1.project-name", [
-    "typewriter is awesome",
+    "typewriter is sweet",
     "typewriter is cool",
     "typewriter is fast"
   ], {
