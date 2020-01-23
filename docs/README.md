@@ -21,6 +21,7 @@
     "cursor": true,
   });
 </script>
+
 # Demo script
 ```
 <script src="typewriter.min.js"></script>
