@@ -5,19 +5,13 @@ A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typ
 
 **Traditional usage:**
 1. Include with `<script src="typewriter.min.js"></script>`.
-2. Call with `new Typed(selector, config)`.
+2. Call with `new Typed(selector, strings, config)`.
 
 
-`selector` should be a CSS selector (will only select first match) and `config` should be an object of form:
+`selector` should be a CSS selector (will only select first match) for the element to bind to, `strings` should be an array containing the strings to transition to, and `config` is an optional argument that should be an object of form:
 ```
 {
-    "default": "This is my default string.",
-    "strings": [
-        "This is my first string.",
-        "This is my second string.",
-        "This is my third string.",
-        "This is my fourth string.^2000"
-    ],
+    "default": "This is my default string.", // optional, set element innerHTML immediately
     "typeSpeed": 100, // default
     "backSpeed": 75, // default
     "cursor": false, // default
@@ -25,7 +19,7 @@ A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typ
     "loop": true, // default
 }
 ```
-i.e., `new Typewriter("#typed-text", myConfig)`.
+i.e., `new Typewriter("#typed-text", ["My first string", "My second string"])`.
 
 # Notes
 
