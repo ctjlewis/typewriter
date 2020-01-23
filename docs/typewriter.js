@@ -25,7 +25,7 @@
 
 // Add CSS
 
-var blinkCSS = `.typed-cursor::after{position:absolute;content:"|";animation:blink-animation 1s steps(5,start) infinite;-webkit-animation:blink-animation 1s steps(5,start) infinite}@keyframes blink-animation{to{visibility:hidden}}@-webkit-keyframes blink-animation{to{visibility:hidden}}`;
+var blinkCSS = `.typed-cursor::after{position:fixed;content:"|";animation:blink-animation 1s steps(5,start) infinite;-webkit-animation:blink-animation 1s steps(5,start) infinite}@keyframes blink-animation{to{visibility:hidden}}@-webkit-keyframes blink-animation{to{visibility:hidden}}`;
 var styleTag = document.createElement("style");
 
 styleTag.innerHTML = blinkCSS;
