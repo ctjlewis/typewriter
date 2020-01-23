@@ -228,4 +228,4 @@ class Typewriter {
 
 // manual set on window for Closure Compiler export
 window["Typewriter"] = Typewriter;
-window.TYPEWRITER_DEBUG = true;
+// window.TYPEWRITER_DEBUG = true;
