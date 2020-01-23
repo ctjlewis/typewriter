@@ -23,57 +23,6 @@
  *  THE SOFTWARE.
  */
 
-// Add CSS
-
-var blinkCSS = `.typed-cursor::after{content:"|";animation:blink-animation 1s steps(5,start) infinite;-webkit-animation:blink-animation 1s steps(5,start) infinite}@keyframes blink-animation{to{visibility:hidden}}@-webkit-keyframes blink-animation{to{visibility:hidden}}`;
-var styleTag = document.createElement("style");
-
-styleTag.innerHTML = blinkCSS;
-document.body.append(styleTag);
-
-// Returns smallest string all arguments have in common
-window.smallestCommonString = function(...strs){
-    var arr= strs.concat().sort(),
-    a1 = arr[0], a2 = arr[arr.length-1], L = a1.length, i = 0;
-    while(i< L && a1.charAt(i)=== a2.charAt(i)) i++;
-    return a1.substring(0, i);
-}
-
-// Extracts ^delay from string
-window.decodeDelay = function(str) {
-    var delayPattern = /\^\d+/;
-    var match = str.match(delayPattern);
-    var customDelay = 0;
-
-    if (match) {
-        customDelay = Number(str.substring(match.index + 1));
-        str = str.substring(0, match.index);
-    }
-
-    return [str, customDelay];
-}
-
-// Waits until given condition is true
-window.waitUntil = function (condition) {
-    var poll = (resolve) => {
-        if(condition()) resolve();
-        else window.requestAnimationFrame(
-            () => poll(resolve)
-        );
-    }
-
-    return new Promise(poll);
-}
-
-window.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-// Check if overscrolled (Safari)
-window.overscrollCheck =
-    () => !(document.body.scrollTop < 0 || document.body.scrollTop + window.innerHeight > document.body.scrollHeight);
-
-window.waitForOverscrollUnlock = 
-    async () =>  await window.waitUntil(window.overscrollCheck);
-
 class Typewriter {
     constructor(selector, strings, config = {}, startWith = config["default"]) {
 
@@ -226,6 +175,56 @@ class Typewriter {
     }
 }
 
+// Add CSS
+
+var blinkCSS = `.typed-cursor::after{content:"|";animation:blink-animation 1s steps(5,start) infinite;-webkit-animation:blink-animation 1s steps(5,start) infinite}@keyframes blink-animation{to{visibility:hidden}}@-webkit-keyframes blink-animation{to{visibility:hidden}}`;
+var styleTag = document.createElement("style");
+
+styleTag.innerHTML = blinkCSS;
+document.body.append(styleTag);
+
+// Returns smallest string all arguments have in common
+window.smallestCommonString = function(...strs){
+    var arr= strs.concat().sort(),
+    a1 = arr[0], a2 = arr[arr.length-1], L = a1.length, i = 0;
+    while(i< L && a1.charAt(i)=== a2.charAt(i)) i++;
+    return a1.substring(0, i);
+}
+
+// Extracts ^delay from string
+window.decodeDelay = function(str) {
+    var delayPattern = /\^\d+/;
+    var match = str.match(delayPattern);
+    var customDelay = 0;
+
+    if (match) {
+        customDelay = Number(str.substring(match.index + 1));
+        str = str.substring(0, match.index);
+    }
+
+    return [str, customDelay];
+}
+
+// Waits until given condition is true
+window.waitUntil = function (condition) {
+    var poll = (resolve) => {
+        if(condition()) resolve();
+        else window.requestAnimationFrame(
+            () => poll(resolve)
+        );
+    }
+
+    return new Promise(poll);
+}
+
+window.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+// Check if overscrolled (Safari)
+window.overscrollCheck =
+    () => !(document.body.scrollTop < 0 || document.body.scrollTop + window.innerHeight > document.body.scrollHeight);
+
+window.waitForOverscrollUnlock = 
+    async () =>  await window.waitUntil(window.overscrollCheck);
+
 // manual set on window for Closure Compiler export
 window["Typewriter"] = Typewriter;
-// window.TYPEWRITER_DEBUG = true;
