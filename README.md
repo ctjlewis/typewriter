@@ -22,7 +22,7 @@ A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typ
 i.e., `new Typewriter("#typed-text", ["My first string", "My second string"])`.
 
 # Demo
-[View the demo on GitHub Pages](https://herculean-inc.github.io/typewriter/).
+[View the demo on GitHub Pages](https://telework-inc.github.io/typewriter/).
 
 
 # Notes
