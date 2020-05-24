@@ -3,10 +3,13 @@
 
 A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typed.js](https://github.com/mattboldt/typed.js/).
 
+[View the demo on GitHub Pages](https://teleworkinc.github.io/typewriter/).
+
+---
+
 **Traditional usage:**
 1. Include with `<script src="typewriter.min.js"></script>`.
 2. Call with `new Typed(selector, strings, config)`.
-
 
 `selector` should be a CSS selector (will only select first match) for the element to bind to, `strings` should be an array containing the strings to transition to, and `config` is an optional argument that should be an object of form:
 ```
@@ -20,9 +23,6 @@ A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typ
 }
 ```
 i.e., `new Typewriter("#typed-text", ["My first string", "My second string"])`.
-
-# Demo
-[View the demo on GitHub Pages](https://telework-inc.github.io/typewriter/).
 
 
 # Notes
