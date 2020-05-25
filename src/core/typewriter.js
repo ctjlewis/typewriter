@@ -27,21 +27,26 @@ window.randomInt = (min, max) => Math.floor(Math.random() * (max - min) ) + min;
 
 class Typewriter {
 
-    constructor(selector, strings, config = {}) {
+    constructor(selector, strings = [], config = {}) {
 
         if (config["dev"])
             window["TYPEWRITER_DEBUG"] = true;
 
         this.selector = selector;
-        this.strings = strings;
+        this.strings = typeof strings === "string"
+            ? JSON.parse(strings)
+            : strings;
         this.config = config;
 
         this.string = config.default || "";
-        this.loop = true;
-        this.element = document.querySelector(this.selector);
+        this.loop = config.loop || true;
+
+        this.element = typeof selector == "string"
+            ? document.querySelector(selector)
+            : selector;
 
         if (!this.element)
-            throw "TYPEWRITER_ERROR: Selected element not found. Please check your selector.";
+            throw new Error("TYPEWRITER_ERROR: Selected element not found. Please check your selector or provide an element.");
 
         this.init();
     }
@@ -68,9 +73,6 @@ class Typewriter {
         if (this.config.cursor !== false)
             this.element.classList.add("typed-content");
 
-        if (this.config.loop == false)
-            this.loop = false;
-
         if (this.config.highlight)
             this.element.style.setProperty(
                 "background-color",
@@ -86,15 +88,26 @@ class Typewriter {
         return new Promise(resolve => window.setTimeout(resolve, ms));
     }
 
+    async start() {
+        this.halt = false;
+        return await this.run();
+    }
+
+    async stop() {
+        this.halt = true;
+        return this;
+    }
+
     async run() {
 
-        if (!this.strings) return this;
+        if (this.halt || !this.strings.length) return this;
         this.log("[startTransitions] Starting transitions...");
 
         this.log("[startTransitions] got strings:", this.strings);
-        for (let string of this.strings)
-            await this.pause(this.config.transitionSpeed || 1300),
+        for (let string of this.strings) {
+            await this.pause(this.config.transitionSpeed || 1300);
             await this.transition(string);
+        }
 
         return this.loop 
             ? await this.run() 
@@ -103,24 +116,26 @@ class Typewriter {
 
     async addCharacter(char) {
 
+        // if (this.halt) return this;
         this.string += char;
         window.requestAnimationFrame(() => {
             this.element.appendChild(document.createTextNode(char));
         });
 
         this.log("[addCharacter] Character added. Now reads:", this.string);
-        return await this.pause(this.config.typeSpeed || window.randomInt(100,200));
+        return await this.pause(this.config.typeSpeed || window.randomInt(80,160));
     }
 
     async deleteCharacter() {
 
+        // if (this.halt) return this;
         this.string = this.string.substring(0, this.string.length - 1);
         window.requestAnimationFrame(() => {
             this.element.lastChild.remove();
         });
 
         this.log("[deleteCharacter] Character deleted. Now reads:", this.string);
-        return await this.pause(this.config.deleteSpeed || window.randomInt(50, 100));
+        return await this.pause(this.config.deleteSpeed || window.randomInt(60, 120));
     }
 
     async addUntil(stringTo) {
@@ -128,17 +143,17 @@ class Typewriter {
         let i = 0;
         this.log("[addUntil] Adding until:", stringTo);
         for (let char of stringTo)
-            if (char !== this.string[i++])
+            if (char !== this.string[i++] && !this.halt)
                 await this.addCharacter(char);
 
         this.log("[addUntil] Done. Now reads:", this.string);
         return this;
     }
 
-    async deleteUntilLcm(stringTo) {
+    async deleteUntil(stringTo) {
 
         this.log("[deleteUntilLcm] Deleting until equal to lcm");
-        while (stringTo.indexOf(this.string) == -1)
+        while (stringTo.indexOf(this.string) === -1 && !this.halt)
             await this.deleteCharacter();
 
         return this;
@@ -148,7 +163,7 @@ class Typewriter {
 
         this.log(`[transition] this.string: '${this.string}', stringTo: '${stringTo}'`);
         
-        await this.deleteUntilLcm(stringTo);
+        await this.deleteUntil(stringTo);
         await this.pause(500);
         await this.addUntil(stringTo);
 
@@ -169,3 +184,5 @@ const blinkCSS = `.typed-content::after{content:"|";-webkit-animation:typed-curs
 const styleTag = document.createElement("style");
 styleTag.innerHTML = blinkCSS;
 document.body.append(styleTag);
+
+export default Typewriter;
