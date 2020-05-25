@@ -7,6 +7,11 @@ A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typ
 
 ---
 
+## React
+```
+<h1><Typewriter></h1>
+```
+
 **Traditional usage:**
 1. Include with `<script src="typewriter.min.js"></script>`.
 2. Call with `new Typed(selector, strings, config)`.

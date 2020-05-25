@@ -4,27 +4,6 @@
  * @license SEE LICENSE @ https://raw.githubusercontent.com/TeleworkInc/.LICENSE/master/LICENSE
  */
 
-// Waits until given condition is true
-window.waitUntil = (condition) => {
-    var poll = (resolve) => {
-        if (condition()) resolve();
-        else window.requestAnimationFrame(
-            () => poll(resolve)
-        );
-    }
-    return new Promise(poll);
-}
-
-// Check if overscrolled (Safari)
-window.overscrollCheck = () => !(
-    document.body.scrollTop < 0 ||
-    document.body.scrollTop + window.innerHeight > document.body.scrollHeight
-);
-
-window.isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-window.waitForOverscrollUnlock = async() => await window.waitUntil(window.overscrollCheck);
-window.randomInt = (min, max) => Math.floor(Math.random() * (max - min) ) + min;
-
 class Typewriter {
 
     constructor(selector, strings = [], config = {}) {
@@ -33,9 +12,7 @@ class Typewriter {
             window["TYPEWRITER_DEBUG"] = true;
 
         this.selector = selector;
-        this.strings = typeof strings === "string"
-            ? JSON.parse(strings)
-            : strings;
+        this.strings = strings;
         this.config = config;
 
         this.string = config.default || "";
@@ -48,7 +25,9 @@ class Typewriter {
         if (!this.element)
             throw new Error("TYPEWRITER_ERROR: Selected element not found. Please check your selector or provide an element.");
 
-        this.init();
+        window.requestAnimationFrame(() => {
+            this.init();
+        });
     }
 
     setTextContent(txt) {
@@ -63,11 +42,42 @@ class Typewriter {
         return this;
     }
 
+    // Waits until given condition is true
+    waitUntil(condition) {
+        var poll = (resolve) => {
+            if (condition()) resolve();
+            else window.requestAnimationFrame(
+                () => poll(resolve)
+            );
+        }
+        return new Promise(poll);
+    }
+
+    // Check if overscrolled (Safari)
+    overscrollCheck() {
+        return !(
+            document.body.scrollTop < 0 ||
+            document.body.scrollTop + window.innerHeight > document.body.scrollHeight
+        );
+    }
+
+    isSafari() {
+        return /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent);
+    }
+
+    async waitForOverscrollUnlock() {
+        await this.waitUntil(this.overscrollCheck);
+    }
+
+    randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min) ) + min;
+    }
+
     async init() {
 
         this.setTextContent(this.string || this.element.textContent);
 
-        if (window.isSafari)
+        if (this.isSafari())
             this.log("[init] Safari detected. Will use overscroll lock.");
 
         if (this.config.cursor !== false)
@@ -80,7 +90,7 @@ class Typewriter {
             );
 
         this.string = this.element.textContent;
-        return await this.run();
+        return await this.setStyles().run();
     }
 
     async pause(ms) {
@@ -95,6 +105,7 @@ class Typewriter {
 
     async stop() {
         this.halt = true;
+        await window.cancelAnimationFrame(window.PENDING_FRAME);
         return this;
     }
 
@@ -118,24 +129,29 @@ class Typewriter {
 
         // if (this.halt) return this;
         this.string += char;
-        window.requestAnimationFrame(() => {
-            this.element.appendChild(document.createTextNode(char));
-        });
+        if (!this.halt) 
+            window.PENDING_FRAME = await window.requestAnimationFrame(() => {
+                this.element.appendChild(document.createTextNode(char));
+            });
 
         this.log("[addCharacter] Character added. Now reads:", this.string);
-        return await this.pause(this.config.typeSpeed || window.randomInt(80,160));
+        return await this.pause(this.config.typeSpeed || this.randomInt(80,160));
+    
     }
 
     async deleteCharacter() {
 
         // if (this.halt) return this;
+        const lastChild = this.element.lastChild;
         this.string = this.string.substring(0, this.string.length - 1);
-        window.requestAnimationFrame(() => {
-            this.element.lastChild.remove();
-        });
+        if(!this.halt)
+        window.PENDING_FRAME = await window.requestAnimationFrame(() => {
+                if (lastChild) lastChild.remove();
+            });
 
         this.log("[deleteCharacter] Character deleted. Now reads:", this.string);
-        return await this.pause(this.config.deleteSpeed || window.randomInt(60, 120));
+        return await this.pause(this.config.deleteSpeed || this.randomInt(60, 120));
+    
     }
 
     async addUntil(stringTo) {
@@ -163,10 +179,26 @@ class Typewriter {
 
         this.log(`[transition] this.string: '${this.string}', stringTo: '${stringTo}'`);
         
+        await this.waitForOverscrollUnlock();
         await this.deleteUntil(stringTo);
         await this.pause(500);
         await this.addUntil(stringTo);
 
+        return this;
+    }
+
+    setStyles() {
+
+        if (window.SET_TYPEWRITER_STYLES)
+            return this;
+
+        const blinkCSS = `.typed-content::after{content:"|";-webkit-animation:typed-cursor-blink 1s infinite;animation:typed-cursor-blink 1s infinite;margin-left:2px}@-webkit-keyframes typed-cursor-blink{0%{opacity:0}50%{opacity:1}100%{opacity:0}}@keyframes typed-cursor-blink{0%{opacity:0}50%{opacity:1}100%{opacity:0}}`;
+
+        const styleTag = document.createElement("style");
+        styleTag.innerHTML = blinkCSS;
+        document.body.append(styleTag);
+
+        window.SET_TYPEWRITER_STYLES = true;
         return this;
     }
 
@@ -177,12 +209,6 @@ class Typewriter {
 }
 
 // manual set on window for Closure Compiler export
-window["Typewriter"] = Typewriter;
-
-const blinkCSS = `.typed-content::after{content:"|";-webkit-animation:typed-cursor-blink 1s infinite;animation:typed-cursor-blink 1s infinite;margin-left:2px}@-webkit-keyframes typed-cursor-blink{0%{opacity:0}50%{opacity:1}100%{opacity:0}}@keyframes typed-cursor-blink{0%{opacity:0}50%{opacity:1}100%{opacity:0}}`;
-
-const styleTag = document.createElement("style");
-styleTag.innerHTML = blinkCSS;
-document.body.append(styleTag);
+// window["Typewriter"] = Typewriter;
 
 export default Typewriter;

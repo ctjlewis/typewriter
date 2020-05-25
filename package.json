@@ -1,8 +1,8 @@
 {
-  "name": "simple-typewriter",
-  "version": "1.0.0",
-  "description": "A very simple and performant typewriter effect for typing out headings.",
-  "main": "index.js",
+  "name": "type-out",
+  "version": "1.1.0",
+  "description": "A very simple and performant package for typing out headings.",
+  "main": "dist/react.js",
   "repository": "https://github.com/TeleworkInc/typewriter.git",
   "author": "Christian Lewis <ctjl96@gmail.com>",
   "license": "SEE LICENSE IN .LICENSE/LICENSE",
