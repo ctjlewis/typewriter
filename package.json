@@ -1,6 +1,6 @@
 {
-  "name": "type-out",
-  "version": "1.1.0",
+  "name": "@telework/typewriter",
+  "version": "1.2.0",
   "description": "A very simple and performant package for typing out headings.",
   "main": "dist/react.js",
   "repository": "https://github.com/TeleworkInc/typewriter.git",
