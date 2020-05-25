@@ -13,6 +13,14 @@ A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typ
     <Typewriter strings={['My first string', 'My second string']} default="Prefill goes here" />
 </h1>
 ```
+or
+```
+<h1>
+    <Typewriter strings={['My first string', 'My second string']}>
+        My prefill text
+    </Typewriter>
+</h1>
+```
 
 **Traditional usage:**
 1. Include with `<script src="typewriter.min.js"></script>`.
