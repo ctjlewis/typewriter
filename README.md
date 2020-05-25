@@ -9,7 +9,9 @@ A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typ
 
 ## React
 ```
-<h1><Typewriter strings={['My first string', 'My second string']} default="Prefill goes here"></h1>
+<h1>
+    <Typewriter strings={['My first string', 'My second string']} default="Prefill goes here">
+</h1>
 ```
 
 **Traditional usage:**
