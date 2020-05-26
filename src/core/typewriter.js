@@ -4,7 +4,8 @@
  * @license SEE LICENSE @ https://raw.githubusercontent.com/TeleworkInc/.LICENSE/master/LICENSE
  */
 
-// import '@babel/polyfill';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 class Typewriter {
 
