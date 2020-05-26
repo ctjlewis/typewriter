@@ -1,1 +1,1 @@
-export { default } from './typewriter'
+export { default } from './typewriter.js'

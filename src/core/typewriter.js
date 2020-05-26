@@ -4,7 +4,7 @@
  * @license SEE LICENSE @ https://raw.githubusercontent.com/TeleworkInc/.LICENSE/master/LICENSE
  */
 
-import '@babel/polyfill';
+// import '@babel/polyfill';
 
 class Typewriter {
 
