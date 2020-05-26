@@ -1,6 +1,6 @@
 {
   "name": "minimalist-typewriter",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "A very simple and performant package for typing out headings.",
   "main": "dist/react.js",
   "repository": "https://github.com/TeleworkInc/typewriter.git",
@@ -10,7 +10,6 @@
   "scripts": {
     "build:prod": "webpack --config ./webpack/production.config.babel.js",
     "build:dev": "webpack --config ./webpack/development.config.babel.js",
-    
     "build:core": "google-closure-compiler --js='./src/core/*.js' --js_output_file='./dist/core.js'",
     "build:react": "google-closure-compiler --js='./src/react/*.js' --js_output_file='./dist/react.js'",
     "build:closure": "yarn build:core && yarn build:react"
