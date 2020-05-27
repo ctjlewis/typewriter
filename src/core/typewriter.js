@@ -4,15 +4,15 @@
  * @license SEE LICENSE @ https://raw.githubusercontent.com/TeleworkInc/.LICENSE/master/LICENSE
  */
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
+// import "core-js/stable";
+// import "regenerator-runtime/runtime";
 
 class Typewriter {
 
     constructor(selector, strings = [], config = {}) {
 
-        if (config["dev"])
-            window["TYPEWRITER_DEBUG"] = true;
+        if (config.dev)
+            window.TYPEWRITER_DEBUG = true;
 
         this.selector = selector;
         this.strings = strings;
@@ -20,6 +20,7 @@ class Typewriter {
 
         this.string = config.default || "";
         this.loop = config.loop || true;
+        this.halt = false;
 
         this.element = typeof selector == "string"
             ? document.querySelector(selector)
@@ -33,55 +34,9 @@ class Typewriter {
         });
     }
 
-    setTextContent(txt) {
-
-        this.element.textContent = '';
-
-        for (let char of txt)
-            this.element.appendChild(
-                document.createTextNode(char)
-            );
-
-        return this;
-    }
-
-    // Waits until given condition is true
-    waitUntil(condition) {
-        var poll = (resolve) => {
-            if (condition()) resolve();
-            else window.requestAnimationFrame(
-                () => poll(resolve)
-            );
-        }
-        return new Promise(poll);
-    }
-
-    // Check if overscrolled (Safari)
-    overscrollCheck() {
-        return !(
-            document.body.scrollTop < 0 ||
-            document.body.scrollTop + window.innerHeight > document.body.scrollHeight
-        );
-    }
-
-    isSafari() {
-        return /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent);
-    }
-
-    async waitForOverscrollUnlock() {
-        await this.waitUntil(this.overscrollCheck);
-    }
-
-    randomInt(min, max) {
-        return Math.floor(Math.random() * (max - min) ) + min;
-    }
-
     async init() {
 
         this.setTextContent(this.string || this.element.textContent);
-
-        if (this.isSafari())
-            this.log("[init] Safari detected. Will use overscroll lock.");
 
         if (this.config.cursor !== false)
             this.element.classList.add("typed-content");
@@ -96,19 +51,47 @@ class Typewriter {
         return await this.setStyles().run();
     }
 
+    setTextContent(txt) {
+
+        this.element.textContent = '';
+
+        for (let char of txt)
+            this.element.appendChild(
+                document.createTextNode(char)
+            );
+
+        return this;
+    }
+
+    randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min) ) + min;
+    }
+
+    update() {
+        this.log("[update] Updating string.");
+        this.string = this.element.textContent;
+        return this;
+    }
+
+    async clear() {
+        this.element.textContent = "";
+        return this;
+    }
+
     async pause(ms) {
         this.log("[delay] Waiting", ms, "ms");
         return new Promise(resolve => window.setTimeout(resolve, ms));
     }
 
     async start() {
+        this.log("[start] Starting...");
         this.halt = false;
         return await this.run();
     }
 
     async stop() {
+        this.log("[stop] Stopping...");
         this.halt = true;
-        await window.cancelAnimationFrame(window.PENDING_FRAME);
         return this;
     }
 
@@ -130,15 +113,14 @@ class Typewriter {
 
     async addCharacter(char) {
 
-        // if (this.halt) return this;
-        this.string += char;
         if (!this.halt) 
-            window.PENDING_FRAME = await window.requestAnimationFrame(() => {
-                this.element.appendChild(document.createTextNode(char));
-            });
+            this.element.appendChild(document.createTextNode(char));
 
-        this.log("[addCharacter] Character added. Now reads:", this.string);
-        return await this.pause(this.config.typeSpeed || this.randomInt(80,160));
+        await this
+                .update()
+                .log("[addCharacter] Character added. Now reads:", this.string);
+
+        return await this.pause(this.config.typeSpeed || this.randomInt(100,200));
     
     }
 
@@ -146,13 +128,13 @@ class Typewriter {
 
         // if (this.halt) return this;
         const lastChild = this.element.lastChild;
-        this.string = this.string.substring(0, this.string.length - 1);
-        if(!this.halt)
-        window.PENDING_FRAME = await window.requestAnimationFrame(() => {
-                if (lastChild) lastChild.remove();
-            });
+        if(!this.halt && lastChild)
+            lastChild.remove();
 
-        this.log("[deleteCharacter] Character deleted. Now reads:", this.string);
+        await this
+                .update()
+                .log("[deleteCharacter] Character deleted. Now reads:", this.string);
+
         return await this.pause(this.config.deleteSpeed || this.randomInt(60, 120));
     
     }
@@ -160,6 +142,7 @@ class Typewriter {
     async addUntil(stringTo) {
 
         let i = 0;
+        await this.update();
         this.log("[addUntil] Adding until:", stringTo);
         for (let char of stringTo)
             if (char !== this.string[i++] && !this.halt)
@@ -170,6 +153,7 @@ class Typewriter {
     }
 
     async deleteUntil(stringTo) {
+        await this.update();
 
         this.log("[deleteUntilLcm] Deleting until equal to lcm");
         while (stringTo.indexOf(this.string) === -1 && !this.halt)
@@ -182,7 +166,6 @@ class Typewriter {
 
         this.log(`[transition] this.string: '${this.string}', stringTo: '${stringTo}'`);
         
-        await this.waitForOverscrollUnlock();
         await this.deleteUntil(stringTo);
         await this.pause(500);
         await this.addUntil(stringTo);

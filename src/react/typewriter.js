@@ -1,32 +1,41 @@
 import React, { Component } from 'react';
-import TypewriterCore from './../core';
+import TypewriterCore from '../core';
 import isEqual from 'lodash/isEqual';
 
 class Typewriter extends Component {
 
   constructor(props) {
     super(props);
+    this.parseProps(this.props);
+    this.state = {
+      instance: null,
+    };
+  }
+
+  parseProps() {
     const { strings, ...config } = this.props;
     this.strings = strings;
     this.config = config;
+    return this;
   }
-  
-  state = {
-    instance: null,
-  };
 
-  stop() {
-    if(this.instance) this.instance.stop();
+  async stop() {
+    console.log("[DEBUG:stop] Trying to stop instance...", this.state);
+
+    this.setState(async () => {
+      if (this.state.instance)
+        await this.state.instance.stop();
+    });
+
     return this;
   }
 
   async refreshInstance() {
 
-    console.log("Refreshing Typewriter...");
-    this.typewriter.textContent = this.config.default || "";
-
+    console.log("[DEBUG:refreshInstance] Refreshing Typewriter...");
     await this.stop();
-    this.setState({
+    
+    this.parseProps(this.props).setState({
       instance: new TypewriterCore(
           this.typewriter,
           typeof this.strings == "string"
@@ -37,30 +46,30 @@ class Typewriter extends Component {
     });
   }
 
-  componentDidMount() {
-    // console.log("componentDidMount");
-    this.refreshInstance();
+  async componentDidMount() {
+    console.log("[DEBUG:componentDidMount]");
+    await this.refreshInstance();
   }
 
-  componentDidUpdate(prevProps) {
-    // console.log("componentDidUpdate\n", this.props, prevProps);
-    if(!isEqual(this.props, prevProps)) 
-      this.refreshInstance();
+  async componentDidUpdate(prevProps) {
+    console.log("[DEBUG:componentDidUpdate]");
+    if(!isEqual(this.props, prevProps))
+      await this.refreshInstance();
   }
 
-  componentWillUnmount() {
-    // console.log("componentWillUnmount");
-    this.stop();
+  async componentWillUnmount() {
+    console.log("DEBUG:componentWillUnmount");
+    await this.stop();
   }
 
   render() {
     const config = this.props.config || {};
-    return (
-      <div
-        ref={(ref) => this.typewriter = ref}
-        className='typewriter'
-        data-testid='typewriter-wrapper'
-      >{config.default || ""}</div>
+    return React.createElement(
+      'div',
+      {
+        ref: (ref) => this.typewriter = ref,
+        className: 'typewriter'
+      }
     );
   }
 }
