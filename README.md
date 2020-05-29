@@ -1,7 +1,7 @@
 
 # Typewriter
 
-A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's [Typed.js](https://github.com/mattboldt/typed.js/).
+A minimalist rewrite of Matt Boldt's [Typed.js](https://github.com/mattboldt/typed.js/).
 
 [View the demo on GitHub Pages](https://teleworkinc.github.io/typewriter/).
 
@@ -42,12 +42,4 @@ i.e., `new Typewriter("#typed-text", ["My first string", "My second string"])`.
 
 # Notes
 
-- Unlike Typed.js, `cursor` is false and `loop` is true by default. The `default` string is set immediately, and then the strings are cycled through. 
-- Includes a patch for Safari where no DOM updates are made while a user is in the middle of a scroll bounce.
-
-## Closure Compiler
-
-1. Include in the pipeline with `--js typewriter.js` before any scripts that depend on the Typewriter class.
-2. Explicitly reference the class with `new window.Typewriter()`. 
-
-Explicitly referencing as a property of `window` will prevent Closure Compiler from throwing error flags. Additionally, you can configure an `externs.js` script and pass it with `--externs externs.js`, and include  `function Typewriter(selector,config) {}` in the externs file. (If you get a warning about `Typewriter` not being a constructor, add the `@constructor` JSDoc flag.)
+- Unlike Typed.js, `loop` is true by default and starts automatically. The `default` string is set immediately, and then the strings are cycled through. Transitioning between two strings like `This is my first string` and `This is my second string` will type naturally, backspacing only to `This is my` and then typing out the rest of the string.

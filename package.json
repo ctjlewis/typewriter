@@ -10,8 +10,8 @@
   "scripts": {
     "build:prod": "webpack --config ./webpack/production.config.babel.js",
     "build:dev": "webpack --config ./webpack/development.config.babel.js",
-    "build:core": "google-closure-compiler -O ADVANCED --js ./src/core/*.js --js_output_file ./dist/core.js",
-    "build:react": "google-closure-compiler -O ADVANCED --js ./src/react/*.js --js_output_file ./dist/react.js",
+    "build:core": "google-closure-compiler -O ADVANCED --js ./src/core.js --js_output_file ./dist/core.js",
+    "build:react": "google-closure-compiler -O ADVANCED --js ./src/react.js --js_output_file ./dist/react.js",
     "build:closure": "yarn build:core && yarn build:react"
   },
   "peerDependencies": {
