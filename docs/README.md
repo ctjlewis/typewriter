@@ -17,8 +17,7 @@
     "typewriter is cool",
     "typewriter is easy"
   ], {
-    "highlight": true,
-    "cursor": true,
+    default: 'awesome'
   });
 </script>
 
