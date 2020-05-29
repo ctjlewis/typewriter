@@ -4,9 +4,6 @@
  * @license SEE LICENSE @ https://raw.githubusercontent.com/TeleworkInc/.LICENSE/master/LICENSE
  */
 
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-
 if (typeof window === "undefined") var window = {};
 
 class Typewriter {
