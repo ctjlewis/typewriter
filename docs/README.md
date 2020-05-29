@@ -23,7 +23,7 @@
 
 # Demo script
 ```
-<script src="typewriter.js"></script>
+<script src="typewriter.min.js"></script>
 <script>
   var typewriter = new Typewriter("h1.project-name", [
     "typewriter is sweet",
