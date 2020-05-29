@@ -1,8 +1,8 @@
 import React from 'react';
-import TypewriterCore from '../core';
+import TypewriterCore from './core';
 import isEqual from 'lodash/isEqual';
 
-import "core-js/stable";
+import "core-js";
 import "regenerator-runtime/runtime";
 
 class Typewriter extends React.Component {

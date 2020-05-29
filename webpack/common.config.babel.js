@@ -3,7 +3,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const config = {
   entry: {
-    core: resolve('src', 'core', 'index.js'),
+    core: resolve('src', 'core'),
     react: resolve('src', 'react'),
   },
 
