@@ -17,7 +17,7 @@
     "typewriter is cool",
     "typewriter is easy"
   ], {
-    default: 'awesome'
+    default: 'typewriter is awesome'
   });
 </script>
 
