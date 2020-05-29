@@ -8,7 +8,7 @@
 // uncomment below imports, run `yarn build:prod`
 // to get working react.js dist
 
-// PS: this ecosystem is garbage and NodeJS developers
+// PS: this ecosystem is garbage and NodeJS maintainers
 // should feel bad. with the fucking ESlint, and the
 // polyfills, and the babel bullshit, and the regenerator-runtimes
 // and the "window not defined :-(" errors, and the
@@ -18,8 +18,7 @@
 // MAKE CODE RELIABLE AGAIN
 // MAKE DEVELOPERS WRITE ACTUAL CODE INSTEAD OF DEBUGGING THEIR WORKFLOW AGAIN
 
-
-// UNCOMMENT FOR BUILD
+// UNCOMMENT FOR BUILD:PROD, COMMENT FOR BUILD:CORE (hilarious)
 // import "core-js";
 // import "regenerator-runtime/runtime";
 

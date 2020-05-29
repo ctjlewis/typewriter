@@ -29,12 +29,12 @@ or
 `selector` should be a CSS selector (will only select first match) for the element to bind to, `strings` should be an array containing the strings to transition to, and `config` is an optional argument that should be an object of form:
 ```
 {
-    "default": "This is my default string.", // optional, set element innerHTML immediately
-    "typeSpeed": 100, // default
-    "backSpeed": 75, // default
-    "cursor": false, // default
-    "highlight": false, // default
-    "loop": true, // default
+    "default": "This is my default string.",
+    "typeSpeed": 100, // default: "natural" 
+    "backSpeed": 75, // default: "natural"
+    "cursor": false,
+    "highlight": true,
+    "loop": false,
 }
 ```
 i.e., `new Typewriter("#typed-text", ["My first string", "My second string"])`.
@@ -43,3 +43,5 @@ i.e., `new Typewriter("#typed-text", ["My first string", "My second string"])`.
 # Notes
 
 - Unlike Typed.js, `loop` is true by default and starts automatically. The `default` string is set immediately, and then the strings are cycled through. Transitioning between two strings like `This is my first string` and `This is my second string` will type naturally, backspacing only to `This is my` and then typing out the rest of the string.
+
+Client-side standalone (clousre compiled) is in `dist/browser.js`.
