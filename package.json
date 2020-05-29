@@ -1,6 +1,6 @@
 {
   "name": "minimalist-typewriter",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "description": "A very simple and performant package for typing out headings.",
   "main": "dist/react.js",
   "repository": "https://github.com/TeleworkInc/typewriter.git",
