@@ -4,14 +4,16 @@
  * @license SEE LICENSE @ https://raw.githubusercontent.com/TeleworkInc/.LICENSE/master/LICENSE
  */
 
-// import "core-js/stable";
-// import "regenerator-runtime/runtime";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
+if (typeof window === "undefined") var window = {};
 
 class Typewriter {
 
     constructor(selector, strings = [], config = {}) {
 
-        if (config.dev)
+        if (window && config.dev)
             window.TYPEWRITER_DEBUG = true;
 
         this.selector = selector;
@@ -29,9 +31,7 @@ class Typewriter {
         if (!this.element)
             throw new Error("TYPEWRITER_ERROR: Selected element not found. Please check your selector or provide an element.");
 
-        window.requestAnimationFrame(() => {
-            this.init();
-        });
+        this.init();
     }
 
     async init() {
