@@ -44,4 +44,4 @@ i.e., `new Typewriter("#typed-text", ["My first string", "My second string"])`.
 
 - Unlike Typed.js, `loop` is true by default and starts automatically. The `default` string is set immediately, and then the strings are cycled through. Transitioning between two strings like `This is my first string` and `This is my second string` will type naturally, backspacing only to `This is my` and then typing out the rest of the string.
 
-Client-side standalone (clousre compiled) is in `dist/browser.js`.
+Client-side standalone (closure compiled) is in `dist/browser.js`.
