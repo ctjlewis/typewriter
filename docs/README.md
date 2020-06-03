@@ -28,10 +28,9 @@
   var typewriter = new Typewriter("h1.project-name", [
     "typewriter is sweet",
     "typewriter is cool",
-    "typewriter is fast"
+    "typewriter is easy"
   ], {
-    "highlight": true,
-    "cursor": true,
+    default: 'typewriter is awesome'
   });
 </script>
 ```
