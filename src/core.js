@@ -1,24 +1,11 @@
 /**
  * @name Typewriter
  * @description A Closure Compiler friendly, minimalist client-side rewrite of Matt Boldt's Typed.js.
- * @license SEE LICENSE @ https://raw.githubusercontent.com/TeleworkInc/.LICENSE/master/LICENSE
+ * @license MIT
  */
 
 
-// uncomment below imports, run `yarn build:prod`
-// to get working react.js dist
-
-// PS: this ecosystem is garbage and NodeJS maintainers
-// should feel bad. with the fucking ESlint, and the
-// polyfills, and the babel bullshit, and the regenerator-runtimes
-// and the "window not defined :-(" errors, and the
-// "module not defined" errors, and the erosion
-// of Javascript's "write once, run anywhere" principle
-
-// MAKE CODE RELIABLE AGAIN
-// MAKE DEVELOPERS WRITE ACTUAL CODE INSTEAD OF DEBUGGING THEIR WORKFLOW AGAIN
-
-// UNCOMMENT FOR BUILD:PROD, COMMENT FOR BUILD:CORE (hilarious)
+// uncomment these for React build - gotta love Babel
 // import "core-js";
 // import "regenerator-runtime/runtime";
 
@@ -209,5 +196,4 @@ class Typewriter {
 
 // manual set on window for Closure Compiler export
 window["Typewriter"] = Typewriter;
-
 export default Typewriter;

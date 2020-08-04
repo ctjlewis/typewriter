@@ -3,7 +3,6 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const config = {
   entry: {
-    core: resolve('src', 'core'),
     react: resolve('src', 'react'),
   },
 
@@ -47,13 +46,22 @@ const config = {
               '@babel/preset-react',
             ],
             plugins: [
+              "@babel/plugin-syntax-dynamic-import",
+              "@babel/plugin-transform-runtime",
+              [ "@babel/plugin-proposal-class-properties", { "loose": true } ],
+              "transform-async-to-generator",
               '@babel/plugin-proposal-class-properties',
               'babel-plugin-transform-react-remove-prop-types',
             ]
           }
         }
       },
-    ]
+    ],
+    "env": {
+      "production": {
+        "presets": ["react-optimize"]
+      }
+    }
   },
 
   plugins: [
